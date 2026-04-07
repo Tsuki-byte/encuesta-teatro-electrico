@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Encuesta de Satisfacción</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <!-- Supabase Client -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+    <header class="site-header">
+        <nav class="navbar">
+            <div class="nav-accent"></div>
+            <div class="nav-content">
+                <span class="nav-logo-text">Gran Espectáculo Eléctrico</span>
+            </div>
+        </nav>
+    </header>
+
+    <div class="background-texture"></div>
+
+    <main class="container">
+        <section id="welcome-screen" class="card active">
+            <h1 id="main-title">Gran Espectáculo Eléctrico</h1>
+            <p class="subtitle">¡Tu opinión nos ayuda a mejorar! Participa en nuestra encuesta de satisfacción y **entra en el sorteo de un Motor Solar Mendocino** exclusivo.</p>
+            
+            <div class="input-group">
+                <label for="user-email">Introduce tu correo para comenzar</label>
+                <input type="email" id="user-email" placeholder="ejemplo@correo.com" required>
+                <p id="email-error" class="error-message">Este correo ya ha completado la encuesta.</p>
+            </div>
+
+            <button id="start-btn" class="btn-primary">Comenzar Encuesta</button>
+        </section>
+
+        <section id="survey-screen" class="card">
+            <div class="progress-bar">
+                <div id="progress" class="progress-fill"></div>
+            </div>
+            <div id="question-container">
+                <!-- Questions will be injected here -->
+            </div>
+            <div class="nav-buttons">
+                <button id="prev-btn" class="btn-secondary" disabled>Anterior</button>
+                <button id="next-btn" class="btn-primary">Siguiente</button>
+            </div>
+        </section>
+
+        <section id="success-screen" class="card">
+            <div class="success-icon">✓</div>
+            <h2>¡Muchas gracias!</h2>
+            <p>Tus respuestas han sido registradas. Tu participación en el **sorteo del Motor Solar Mendocino** ha quedado confirmada.</p>
+            <button id="return-btn" class="btn-primary">Finalizar y Volver</button>
+        </section>
+    </main>
+
+    <script src="app.js"></script>
+</body>
+</html>
