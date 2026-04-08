@@ -1,8 +1,7 @@
 // --- CONFIGURATION ---
-// Replace with your Supabase credentials
 const SUPABASE_URL = 'https://bjbhbdcueiyjtifvcxcg.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJqYmhiZGN1ZWl5anRpZnZjeGNnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU1OTA4NDAsImV4cCI6MjA5MTE2Njg0MH0.iCi7FWXBzOfkwqjK_0G8ChkNIyY2ixH-h5d-NvcM-DY';
-const RETURN_URL = 'https://google.com'; // Change this later
+const RETURN_URL = 'https://granteatroelectrico.unizar.es';
 
 console.log('Script app.js cargado correctamente');
 
@@ -33,15 +32,15 @@ const questions = [
         type: 'choice',
         text: '¿Cuál de estas máquinas o experimentos te ha sorprendido más?',
         options: [
-            'Bola de Plasma', 
-            'Máquina de Wimshurt', 
-            'Generador de Marx', 
-            'Transferencia Inalámbrica', 
-            'Bobina de Tesla', 
-            'Coche Eléctrico', 
-            'Levitador de Haslett', 
-            'Levitador de Ayrton', 
-            'Motor Solar Mendocino', 
+            'Bola de Plasma',
+            'Máquina de Wimshurt',
+            'Generador de Marx',
+            'Transferencia Inalámbrica',
+            'Bobina de Tesla',
+            'Coche Eléctrico',
+            'Levitador de Haslett',
+            'Levitador de Ayrton',
+            'Motor Solar Mendocino',
             'Lifter'
         ]
     },
@@ -354,4 +353,13 @@ emailInput.addEventListener('keypress', (e) => {
 // Clear error on type
 emailInput.addEventListener('input', () => {
     emailError.style.display = 'none';
+});
+
+// Cancel and Exit Logic
+document.querySelectorAll('.btn-cancel').forEach(btn => {
+    btn.addEventListener('click', () => {
+        if (confirm('¿Estás seguro de que quieres salir? Se perderán tus respuestas.')) {
+            window.location.href = RETURN_URL;
+        }
+    });
 });
