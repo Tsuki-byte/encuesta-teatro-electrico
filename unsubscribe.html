@@ -91,6 +91,7 @@
         const SUPABASE_URL = 'https://bjbhbdcueiyjtifvcxcg.supabase.co';
         const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJqYmhiZGN1ZWl5anRpZnZjeGNnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU1OTA4NDAsImV4cCI6MjA5MTE2Njg0MH0.iCi7FWXBzOfkwqjK_0G8ChkNIyY2ixH-h5d-NvcM-DY';
 
+        console.log('Iniciando script de baja...');
         const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
         // Elements
@@ -102,25 +103,47 @@
         // Get email from URL
         const urlParams = new URLSearchParams(window.location.search);
         const email = urlParams.get('email');
+        console.log('Email detectado:', email);
 
         async function updateConsent(consentValue) {
+            console.log('Solicitando cambio de consentimiento a:', consentValue);
+            
             if (!email) {
-                showError('No se ha proporcionado un correo electrónico válido.');
+                showError('No se ha detectado ningún correo en el enlace.');
                 return;
             }
 
+            // Timeout de seguridad (12 segundos)
+            const timeout = setTimeout(() => {
+                showError('La conexión con el servidor está tardando demasiado. Por favor, compruebe su conexión o inténtelo más tarde.');
+            }, 12000);
+
             try {
-                const { error } = await supabase
+                const { data, error, status } = await supabase
                     .from('responses')
                     .update({ marketing_consent: consentValue })
-                    .eq('email', email);
+                    .eq('email', email)
+                    .select();
 
-                if (error) throw error;
+                clearTimeout(timeout);
+                console.log('Respuesta de Supabase:', { data, error, status });
+
+                if (error) {
+                    console.error('Error de Supabase:', error);
+                    throw new Error(error.message);
+                }
+
+                if (!data || data.length === 0) {
+                    console.warn('No se encontró ningún registro para este email.');
+                    showError('No hemos encontrado ninguna suscripción asociada a este correo electrónico (' + email + ').');
+                    return;
+                }
                 
                 showResult(consentValue);
             } catch (err) {
-                console.error('Error updating consent:', err);
-                showError();
+                clearTimeout(timeout);
+                console.error('Error fatal:', err);
+                showError('Error técnico: ' + err.message);
             }
         }
 
@@ -129,10 +152,10 @@
             resultContainer.style.display = 'block';
             errorContainer.style.display = 'none';
             
-            if (isUnsubscribed) {
+            if (!isUnsubscribed) { // consentValue false means UNSUBSCRIBED
                 document.querySelector('.status-icon').innerText = '🔕';
                 document.querySelector('#result-container h2').innerText = 'Baja confirmada';
-                document.getElementById('success-msg').innerText = 'Tu correo ha sido dado de baja de nuestras comunicaciones publicitarias.';
+                document.getElementById('success-msg').innerText = 'Tu correo (' + email + ') ha sido dado de baja de nuestras comunicaciones publicitarias.';
                 undoBtn.style.display = 'inline-block';
                 undoBtn.innerText = 'Deshacer (volver a suscribirme)';
                 undoBtn.onclick = () => {
@@ -140,10 +163,10 @@
                     resultContainer.style.display = 'none';
                     updateConsent(true);
                 };
-            } else {
+            } else { // consentValue true means SUBSCRIBED
                 document.querySelector('.status-icon').innerText = '🔔';
                 document.querySelector('#result-container h2').innerText = 'Suscripción restaurada';
-                document.getElementById('success-msg').innerText = 'Has vuelto a activar las comunicaciones publicitarias.';
+                document.getElementById('success-msg').innerText = 'Has vuelto a activar las comunicaciones publicitarias para ' + email + '.';
                 undoBtn.style.display = 'inline-block';
                 undoBtn.innerText = 'Darse de baja de nuevo';
                 undoBtn.onclick = () => {
@@ -165,7 +188,7 @@
         if (email) {
             updateConsent(false);
         } else {
-            showError('Enlace de baja no válido.');
+            showError('El enlace de baja no es válido (falta el email).');
         }
     </script>
 </body>
