@@ -463,4 +463,16 @@ input:focus, textarea:focus {
     .container { padding-top: 100px; }
     .card { padding: 40px 25px; border-radius: 30px; }
     h1, h2 { font-size: 2rem; }
+    
+    /* Ajuste para botones en móvil */
+    .nav-buttons {
+        gap: 10px;
+    }
+    .btn-primary, .btn-secondary {
+        padding: 15px 10px;
+        font-size: 1rem;
+        flex: 1;
+        margin-right: 0; /* Eliminar margen antiguo */
+        width: auto;
+    }
 }
