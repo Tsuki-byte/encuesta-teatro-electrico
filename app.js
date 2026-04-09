@@ -99,6 +99,7 @@ const questions = [
 // --- STATE ---
 let currentStep = 0;
 let userEmail = '';
+let marketingConsent = false;
 let userAnswers = {};
 
 // --- ELEMENTS ---
@@ -109,6 +110,7 @@ const screens = {
 };
 
 const emailInput = document.getElementById('user-email');
+const marketingConsentInput = document.getElementById('marketing-consent');
 const emailError = document.getElementById('email-error');
 const startBtn = document.getElementById('start-btn');
 const questionContainer = document.getElementById('question-container');
@@ -158,6 +160,8 @@ async function startSurvey() {
             alert('Por favor, introduce un correo electrónico válido.');
             return;
         }
+
+        marketingConsent = marketingConsentInput.checked;
 
         startBtn.disabled = true;
         startBtn.innerText = 'Cargando...';
@@ -287,7 +291,7 @@ async function submitSurvey() {
     nextBtn.innerText = 'Enviando...';
 
     if (!supabaseClient) {
-        console.log('Demo Mode: Survey data:', { userEmail, userAnswers });
+        console.log('Demo Mode: Survey data:', { userEmail, marketingConsent, userAnswers });
         setTimeout(() => showScreen('success'), 1000);
         return;
     }
@@ -296,7 +300,10 @@ async function submitSurvey() {
         // 1. Create response record
         const { data: responseData, error: responseError } = await supabaseClient
             .from('responses')
-            .insert({ email: userEmail })
+            .insert({ 
+                email: userEmail,
+                marketing_consent: marketingConsent
+            })
             .select()
             .single();
 
