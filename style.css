@@ -471,10 +471,10 @@ input:focus, textarea:focus {
         width: 100%;
     }
     .btn-primary, .btn-secondary {
-        padding: 15px 5px;
-        font-size: 0.9rem;
+        padding: 15px 2px; /* Relleno lateral mínimo */
+        font-size: 0.85rem; /* Fuente un poco más pequeña */
         flex: 1;
-        min-width: 0; /* Permitir que se encojan lo necesario */
+        min-width: 0;
         margin-right: 0;
         width: auto;
         white-space: nowrap;
