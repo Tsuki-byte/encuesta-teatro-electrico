@@ -465,20 +465,27 @@ input:focus, textarea:focus {
     h1, h2 { font-size: 1.8rem; }
     .subtitle { font-size: 1rem; margin-bottom: 25px; }
     
-    /* Ajuste para botones en móvil */
+    /* Armonización de todos los botones en móvil */
     .nav-buttons {
-        gap: 10px;
+        gap: 12px;
         width: 100%;
     }
     .btn-primary, .btn-secondary {
-        padding: 15px 2px; /* Relleno lateral mínimo */
-        font-size: 0.85rem; /* Fuente un poco más pequeña */
+        padding: 15px 8px; /* Un poco más de aire, ahora que hay sitio */
+        font-size: 0.9rem;
         flex: 1;
         min-width: 0;
         margin-right: 0;
         width: auto;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
+    }
+
+    .option-btn {
+        padding: 12px 15px; /* Reducido para que no se vea tan gigante */
+        font-size: 1rem;
+    }
+    
+    .rating-btn {
+        font-size: 1.1rem;
+        padding: 10px 0;
     }
 }
