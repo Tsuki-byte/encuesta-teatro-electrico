@@ -92,7 +92,7 @@
         const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJqYmhiZGN1ZWl5anRpZnZjeGNnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU1OTA4NDAsImV4cCI6MjA5MTE2Njg0MH0.iCi7FWXBzOfkwqjK_0G8ChkNIyY2ixH-h5d-NvcM-DY';
 
         console.log('Iniciando script de baja...');
-        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
         // Elements
         const statusContainer = document.getElementById('status-container');
@@ -119,7 +119,7 @@
             }, 12000);
 
             try {
-                const { data, error, status } = await supabase
+                const { data, error, status } = await supabaseClient
                     .from('responses')
                     .update({ marketing_consent: consentValue })
                     .eq('email', email)
