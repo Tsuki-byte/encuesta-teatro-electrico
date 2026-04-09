@@ -337,7 +337,9 @@ async function submitSurvey() {
 
     } catch (err) {
         console.error('Error submitting survey:', err);
-        alert('Hubo un error al enviar tu encuesta. Por favor, inténtalo de nuevo.');
+        // Mostramos el mensaje de error específico para diagnóstico
+        const detail = err.message || JSON.stringify(err);
+        alert('Hubo un error al enviar tu encuesta: ' + detail);
         nextBtn.disabled = false;
         nextBtn.innerText = 'Enviar Encuesta';
     }
