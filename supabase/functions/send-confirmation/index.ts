@@ -45,7 +45,7 @@ serve(async (req) => {
               <br><em>EDEMUZ - Equipo Docente de Electromagnetismo Universidad de Zaragoza</em>
             </p>
             <div style="text-align: center; margin-top: 20px; border-top: 1px solid #ddd; padding-top: 15px;">
-              <a href="https://granteatroelectrico.unizar.es/unsubscribe.html?email=${email}" style="font-size: 12px; color: #999; text-decoration: underline;">Darse de baja de comunicaciones publicitarias</a>
+              <a href="https://tsuki-byte.github.io/encuesta-teatro-electrico/unsubscribe.html?email=${email}" style="font-size: 12px; color: #999; text-decoration: underline;">Darse de baja de comunicaciones publicitarias</a>
             </div>
           </div>
         `,
