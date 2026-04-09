@@ -460,19 +460,25 @@ input:focus, textarea:focus {
 }
 
 @media (max-width: 600px) {
-    .container { padding-top: 100px; }
-    .card { padding: 40px 25px; border-radius: 30px; }
-    h1, h2 { font-size: 2rem; }
+    .container { padding-top: 100px; padding-left: 15px; padding-right: 15px; }
+    .card { padding: 40px 20px; border-radius: 30px; border-width: 6px; }
+    h1, h2 { font-size: 1.8rem; }
+    .subtitle { font-size: 1rem; margin-bottom: 25px; }
     
     /* Ajuste para botones en móvil */
     .nav-buttons {
         gap: 10px;
+        width: 100%;
     }
     .btn-primary, .btn-secondary {
-        padding: 15px 10px;
-        font-size: 1rem;
+        padding: 15px 5px;
+        font-size: 0.9rem;
         flex: 1;
-        margin-right: 0; /* Eliminar margen antiguo */
+        min-width: 0; /* Permitir que se encojan lo necesario */
+        margin-right: 0;
         width: auto;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
 }
