@@ -127,29 +127,10 @@ function showScreen(screenId) {
 }
 
 async function checkEmailExists(email) {
-    if (!supabaseClient) {
-        console.warn('Explorador en modo demo (Sin Supabase configurado)');
-        return false;
-    }
-
-    console.log('Llamando a Supabase para verificar email:', email);
-    try {
-        const { data, error } = await supabaseClient
-            .from('responses')
-            .select('id')
-            .eq('email', email)
-            .maybeSingle();
-
-        if (error) {
-            console.error('Error de Supabase al consultar email:', error.message, error.details);
-            throw error;
-        }
-
-        return !!data;
-    } catch (err) {
-        console.error('Error al ejecutar la consulta:', err);
-        throw err;
-    }
+    // Ya no hacemos esta consulta al servidor porque RLS la bloquea por seguridad.
+    // La verificacion ocurrrira al final: Si el email está duplicado, Supabase nos 
+    // devolverá un error (código 23505) en la inserción final que capturaremos allí.
+    return false;
 }
 
 async function startSurvey() {
@@ -297,21 +278,32 @@ async function submitSurvey() {
     }
 
     try {
-        // 1. Create response record
-        const { data: responseData, error: responseError } = await supabaseClient
+        // 0. Pre-generar el ID de la respuesta para no tener que pedírselo a la base de datos
+        const responseId = window.crypto.randomUUID();
+
+        // 1. Create response record (sin select al final porque RLS nos lo bloquea)
+        const { error: responseError } = await supabaseClient
             .from('responses')
             .insert({ 
+                id: responseId,
                 email: userEmail,
                 marketing_consent: marketingConsent
-            })
-            .select()
-            .single();
+            });
 
-        if (responseError) throw responseError;
+        if (responseError) {
+            // Manejamos el caso en que el email ya estaba registrado
+            if (responseError.code === '23505') {
+                alert('Este correo electrónico ya ha completado la encuesta. Solo se permite una respuesta por persona.');
+                nextBtn.disabled = false;
+                nextBtn.innerText = 'Enviar Encuesta';
+                return;
+            }
+            throw responseError;
+        }
 
         // 2. Insert answers
         const answersToInsert = Object.entries(userAnswers).map(([qId, val]) => ({
-            response_id: responseData.id,
+            response_id: responseId,
             question_id: qId,
             value: val.toString()
         }));
